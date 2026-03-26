@@ -1,0 +1,150 @@
+<!-- menu.component.html -->
+<div class="menu-page">
+
+  <!-- ── Page Header ───────────────────────────────────────────── -->
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1 class="page-title">Today's Menu</h1>
+      <p class="page-subtitle">Fresh from the cafeteria kitchen</p>
+    </div>
+
+    <!-- Search bar -->
+    <div class="search-wrapper">
+      <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+      </svg>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search for dishes..."
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearch($event)"
+      />
+      <button class="search-clear" *ngIf="searchQuery" (click)="clearSearch()">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Loading State ─────────────────────────────────────────── -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="skeleton-category" *ngFor="let i of [1,2,3]">
+      <div class="skeleton-header"></div>
+      <div class="skeleton-item" *ngFor="let j of [1,2,3]"></div>
+    </div>
+  </div>
+
+  <!-- ── Error State ───────────────────────────────────────────── -->
+  <div class="error-state" *ngIf="!isLoading && errorMessage">
+    <div class="error-icon">⚠️</div>
+    <h3>Couldn't load menu</h3>
+    <p>{{ errorMessage }}</p>
+    <button class="btn-retry" (click)="loadMenu()">Try again</button>
+  </div>
+
+  <!-- ── Empty Search ──────────────────────────────────────────── -->
+  <div class="empty-state" *ngIf="!isLoading && !errorMessage && filteredGroups.length === 0 && searchQuery">
+    <div class="empty-icon">🔍</div>
+    <h3>No items found</h3>
+    <p>No dishes match "<strong>{{ searchQuery }}</strong>"</p>
+    <button class="btn-retry" (click)="clearSearch()">Clear search</button>
+  </div>
+
+  <!-- ── Menu Content ──────────────────────────────────────────── -->
+  <div class="menu-content" *ngIf="!isLoading && !errorMessage && filteredGroups.length > 0">
+
+    <!-- Category accordion -->
+    <div class="category-block"
+         *ngFor="let group of filteredGroups; trackBy: trackByCategory">
+
+      <!-- Category header (accordion toggle) -->
+      <div class="category-header" (click)="toggleCategory(group)">
+        <div class="category-header-left">
+          <h2 class="category-title">{{ group.name }}</h2>
+          <span class="category-count">{{ group.items.length }} item{{ group.items.length !== 1 ? 's' : '' }}</span>
+        </div>
+        <div class="category-header-right">
+          <svg class="accordion-icon" viewBox="0 0 20 20" fill="currentColor"
+               [class.rotated]="!group.isOpen">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Item list (collapsible) -->
+      <div class="item-list" [class.collapsed]="!group.isOpen">
+        <div class="menu-item"
+             *ngFor="let item of group.items; trackBy: trackByItem"
+             [class.out-of-stock]="!item.available || item.stock === 0">
+
+          <!-- Item info -->
+          <div class="item-info">
+            <div class="item-name-row">
+              <!-- Veg/non-veg indicator dot -->
+              <span class="veg-dot"></span>
+              <h3 class="item-name">{{ item.name }}</h3>
+            </div>
+            <div class="item-price">₹{{ item.price }}</div>
+            <div class="item-stock-badge" *ngIf="item.stock > 0 && item.stock <= 5 && item.available">
+              Only {{ item.stock }} left
+            </div>
+            <div class="item-unavailable" *ngIf="!item.available || item.stock === 0">
+              Not available
+            </div>
+          </div>
+
+          <!-- Quantity control -->
+          <div class="item-action">
+            <!-- ADD button (when qty = 0) -->
+            <button class="btn-add"
+                    *ngIf="getQuantity(item._id) === 0"
+                    [disabled]="!item.available || item.stock === 0"
+                    (click)="addToCart(item)">
+              ADD
+            </button>
+
+            <!-- Quantity stepper (when qty > 0) -->
+            <div class="qty-stepper" *ngIf="getQuantity(item._id) > 0">
+              <button class="qty-btn minus" (click)="removeFromCart(item)">
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+              <span class="qty-value">{{ getQuantity(item._id) }}</span>
+              <button class="qty-btn plus"
+                      (click)="addToCart(item)"
+                      [disabled]="getQuantity(item._id) >= item.stock">
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Floating Cart Bar ─────────────────────────────────────── -->
+  <div class="cart-bar" [class.visible]="hasCart">
+    <div class="cart-bar-inner">
+      <div class="cart-bar-left">
+        <span class="cart-badge">{{ totalCartItems }}</span>
+        <span class="cart-label">{{ totalCartItems === 1 ? 'item' : 'items' }} added</span>
+      </div>
+      <div class="cart-bar-right">
+        <span class="cart-total">₹{{ totalCartPrice }}</span>
+        <button class="btn-view-cart" (click)="viewCart()">
+          View Cart
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

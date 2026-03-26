@@ -1,0 +1,189 @@
+<!-- cart.component.html -->
+<div class="cart-page">
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!--  SUCCESS STATE                                             -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div class="state-card success-card" *ngIf="pageState === 'success'">
+    <div class="success-anim">
+      <div class="success-ring"></div>
+      <svg class="success-check" viewBox="0 0 52 52" fill="none">
+        <circle cx="26" cy="26" r="25" stroke="#22C55E" stroke-width="2"/>
+        <path class="check-path" d="M14 27l8 8 16-16"
+              stroke="#22C55E" stroke-width="3"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <h2 class="success-title">Order Placed!</h2>
+    <p class="success-sub">Your order has been received by the cafeteria.</p>
+
+    <div class="order-id-chip">
+      <svg viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/>
+      </svg>
+      Order ID: <strong>{{ placedOrderId }}</strong>
+    </div>
+
+    <p class="success-note">Show this ID at the counter to collect your order.</p>
+
+    <div class="success-actions">
+      <button class="btn-secondary" (click)="backToMenu()">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+        </svg>
+        Back to Menu
+      </button>
+      <button class="btn-primary" (click)="goToDashboard()">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+        </svg>
+        Go to Dashboard
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!--  ERROR STATE                                               -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div class="state-card error-card" *ngIf="pageState === 'error'">
+    <div class="error-icon">⚠️</div>
+    <h2>Order Failed</h2>
+    <p>{{ errorMessage }}</p>
+    <div class="success-actions">
+      <button class="btn-secondary" (click)="backToMenu()">Back to Menu</button>
+      <button class="btn-primary" (click)="tryAgain()">Try Again</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!--  CART STATE (normal + placing)                             -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <ng-container *ngIf="pageState === 'cart' || pageState === 'placing'">
+
+    <!-- Page header -->
+    <div class="page-header">
+      <button class="btn-back" (click)="backToMenu()">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+        </svg>
+        Back to Menu
+      </button>
+      <div class="page-title-group">
+        <h1 class="page-title">Your Cart</h1>
+        <span class="item-count" *ngIf="!isEmpty">{{ totalItems }} {{ totalItems === 1 ? 'item' : 'items' }}</span>
+      </div>
+    </div>
+
+    <!-- Empty cart -->
+    <div class="empty-cart" *ngIf="isEmpty">
+      <div class="empty-icon">🛒</div>
+      <h3>Your cart is empty</h3>
+      <p>Go to the menu and add some delicious items!</p>
+      <button class="btn-primary" (click)="backToMenu()">Browse Menu</button>
+    </div>
+
+    <!-- Cart content -->
+    <div class="cart-layout" *ngIf="!isEmpty">
+
+      <!-- Left: Item list -->
+      <div class="cart-items-panel">
+        <div class="panel-title">Items in your order</div>
+
+        <div class="cart-item"
+             *ngFor="let cartItem of cartItems; trackBy: trackByItem">
+
+          <div class="cart-item-info">
+            <span class="veg-dot"></span>
+            <div>
+              <div class="cart-item-name">{{ cartItem.item.name }}</div>
+              <div class="cart-item-unit">₹{{ cartItem.item.price }} each</div>
+            </div>
+          </div>
+
+          <div class="cart-item-right">
+            <!-- Qty stepper -->
+            <div class="qty-stepper">
+              <button class="qty-btn" (click)="decrement(cartItem)"
+                      [disabled]="pageState === 'placing'">
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+              <span class="qty-value">{{ cartItem.quantity }}</span>
+              <button class="qty-btn" (click)="increment(cartItem)"
+                      [disabled]="pageState === 'placing'">
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+            </div>
+            <!-- Line total -->
+            <div class="cart-item-total">
+              ₹{{ cartItem.item.price * cartItem.quantity }}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right: Order summary -->
+      <div class="order-summary-panel">
+        <div class="panel-title">Order Summary</div>
+
+        <div class="summary-lines">
+          <div class="summary-row" *ngFor="let cartItem of cartItems">
+            <span class="summary-name">{{ cartItem.item.name }} × {{ cartItem.quantity }}</span>
+            <span class="summary-amount">₹{{ cartItem.item.price * cartItem.quantity }}</span>
+          </div>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-total-row">
+          <span>Total</span>
+          <span class="summary-total">₹{{ totalPrice }}</span>
+        </div>
+
+        <div class="summary-note">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+          </svg>
+          Collect your order at the cafeteria counter with your Order ID.
+        </div>
+
+        <!-- Action buttons -->
+        <div class="summary-actions">
+          <button class="btn-secondary full-width" (click)="backToMenu()"
+                  [disabled]="pageState === 'placing'">
+            Back to Menu
+          </button>
+
+          <button class="btn-place-order full-width"
+                  (click)="placeOrder()"
+                  [disabled]="pageState === 'placing'"
+                  [class.loading]="pageState === 'placing'">
+
+            <!-- Spinner -->
+            <svg *ngIf="pageState === 'placing'" class="spinner"
+                 viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor"
+                      stroke-width="4" opacity=".25"/>
+              <path fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+            </svg>
+
+            <!-- Bag icon -->
+            <svg *ngIf="pageState !== 'placing'" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+            </svg>
+
+            {{ pageState === 'placing' ? 'Placing Order...' : 'Place Order  ₹' + totalPrice }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </ng-container>
+
+</div>

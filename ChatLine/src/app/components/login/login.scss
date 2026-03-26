@@ -1,0 +1,465 @@
+/* login.component.scss */
+
+// ── Variables ──────────────────────────────────────────────────────────────
+$primary:       #2B7FE0;
+$primary-dark:  #1a5fb7;
+$primary-light: #EBF4FF;
+$accent:        #38BDF8;
+$text-dark:     #0F172A;
+$text-mid:      #475569;
+$text-light:    #94A3B8;
+$border:        #CBD5E1;
+$border-focus:  #2B7FE0;
+$bg:            #F0F7FF;
+$white:         #FFFFFF;
+$error:         #EF4444;
+$success:       #22C55E;
+$shadow-sm:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+$shadow-md:     0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06);
+$shadow-lg:     0 10px 30px rgba(43,127,224,.12);
+
+// ── Layout ─────────────────────────────────────────────────────────────────
+.auth-wrapper {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'DM Sans', 'Segoe UI', sans-serif;
+  background: $bg;
+}
+
+// ── Hero Panel ─────────────────────────────────────────────────────────────
+.hero-panel {
+  flex: 1;
+  position: relative;
+  min-height: 280px;
+  background:
+    url('/assets/cafeteria-hero.jpg') center / cover no-repeat,
+    linear-gradient(135deg, #1a5fb7 0%, #2B7FE0 50%, #38BDF8 100%);
+  overflow: hidden;
+
+  // Decorative blobs
+  &::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    background: rgba(255,255,255,.06);
+    border-radius: 50%;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: -60px;
+    width: 280px; height: 280px;
+    background: rgba(255,255,255,.04);
+    border-radius: 50%;
+  }
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(26,95,183,.88) 0%, rgba(43,127,224,.75) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+}
+
+.hero-content {
+  max-width: 420px;
+  color: $white;
+  animation: fadeInUp .6s ease both;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-bottom: 2.5rem;
+
+  .logo-img {
+    width: 48px; height: 48px;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,.25));
+  }
+
+  .brand-name {
+    font-size: 1.5rem;
+    font-weight: 300;
+    letter-spacing: -.01em;
+    color: rgba(255,255,255,.95);
+    strong { font-weight: 700; }
+  }
+}
+
+.hero-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -.03em;
+  margin: 0 0 1rem;
+  text-shadow: 0 2px 12px rgba(0,0,0,.2);
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,.82);
+  margin-bottom: 2rem;
+  font-weight: 400;
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .4rem .9rem;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 500;
+    color: rgba(255,255,255,.92);
+    backdrop-filter: blur(6px);
+  }
+}
+
+// ── Form Panel ─────────────────────────────────────────────────────────────
+.form-panel {
+  width: 100%;
+  max-width: 500px;
+  background: $white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  box-shadow: -4px 0 40px rgba(43,127,224,.08);
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  animation: fadeInUp .5s ease .1s both;
+}
+
+// Mobile brand (only shown on small screens)
+.mobile-brand {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  margin-bottom: 1.5rem;
+
+  .logo-img-sm {
+    width: 36px; height: 36px;
+  }
+  .brand-name-sm {
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: $primary-dark;
+    strong { font-weight: 700; }
+  }
+}
+
+// ── Form Header ────────────────────────────────────────────────────────────
+.form-header {
+  margin-bottom: 1.75rem;
+  h2 {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: $text-dark;
+    letter-spacing: -.03em;
+    margin: 0 0 .35rem;
+  }
+  p {
+    font-size: .9rem;
+    color: $text-mid;
+    margin: 0;
+  }
+}
+
+// ── Alerts ─────────────────────────────────────────────────────────────────
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: .6rem;
+  padding: .75rem 1rem;
+  border-radius: 10px;
+  font-size: .875rem;
+  margin-bottom: 1.25rem;
+  animation: slideDown .25s ease;
+
+  .alert-icon {
+    width: 18px; height: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  &.alert-error {
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    color: #B91C1C;
+  }
+  &.alert-success {
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
+    color: #15803D;
+  }
+}
+
+// ── Form Groups ────────────────────────────────────────────────────────────
+.form-group {
+  margin-bottom: 1.1rem;
+}
+
+.form-label {
+  display: block;
+  font-size: .825rem;
+  font-weight: 600;
+  color: $text-dark;
+  margin-bottom: .45rem;
+  letter-spacing: .01em;
+}
+
+.label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .45rem;
+  label { margin-bottom: 0; }
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .input-icon {
+    position: absolute;
+    left: .9rem;
+    width: 18px; height: 18px;
+    color: $text-light;
+    pointer-events: none;
+    transition: color .2s;
+  }
+
+  &:focus-within .input-icon {
+    color: $primary;
+  }
+
+  &.error {
+    .form-input { border-color: $error; background: #FEF2F2; }
+    .input-icon { color: $error; }
+  }
+  &.success {
+    .form-input { border-color: $success; }
+  }
+}
+
+.form-input {
+  width: 100%;
+  padding: .72rem .9rem .72rem 2.75rem;
+  border: 1.5px solid $border;
+  border-radius: 10px;
+  font-size: .9rem;
+  color: $text-dark;
+  background: $white;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+  font-family: inherit;
+  box-sizing: border-box;
+
+  &::placeholder { color: $text-light; }
+
+  &:focus {
+    border-color: $border-focus;
+    box-shadow: 0 0 0 3px rgba(43,127,224,.12);
+    background: #FAFCFF;
+  }
+}
+
+.toggle-password {
+  position: absolute;
+  right: .75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: .25rem;
+  color: $text-light;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  transition: color .2s;
+
+  svg { width: 18px; height: 18px; }
+
+  &:hover { color: $primary; }
+  &:focus-visible {
+    outline: 2px solid $primary;
+    outline-offset: 2px;
+  }
+}
+
+.field-error {
+  margin-top: .35rem;
+  font-size: .775rem;
+  color: $error;
+  font-weight: 500;
+  animation: slideDown .2s ease;
+}
+
+.forgot-link {
+  font-size: .8rem;
+  font-weight: 500;
+  color: $primary;
+  text-decoration: none;
+  transition: color .2s;
+
+  &:hover { color: $primary-dark; text-decoration: underline; }
+}
+
+// ── Primary Button ─────────────────────────────────────────────────────────
+.btn-primary {
+  width: 100%;
+  padding: .8rem 1.5rem;
+  background: linear-gradient(135deg, $primary 0%, $primary-dark 100%);
+  color: $white;
+  border: none;
+  border-radius: 10px;
+  font-size: .95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  letter-spacing: .01em;
+  transition: transform .15s, box-shadow .2s, opacity .2s;
+  box-shadow: 0 4px 14px rgba(43,127,224,.35);
+  margin-top: 1.5rem;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(43,127,224,.45);
+  }
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  &:disabled {
+    opacity: .7;
+    cursor: not-allowed;
+  }
+  &:focus-visible {
+    outline: 3px solid rgba(43,127,224,.4);
+    outline-offset: 2px;
+  }
+}
+
+// Spinner
+.spinner {
+  width: 18px; height: 18px;
+  animation: spin .7s linear infinite;
+
+  .spinner-track { opacity: .25; }
+  .spinner-arc { opacity: 1; }
+}
+
+// ── Footer ─────────────────────────────────────────────────────────────────
+.form-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: .875rem;
+  color: $text-mid;
+
+  .register-link {
+    color: $primary;
+    font-weight: 600;
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+.security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  margin-top: 1.5rem;
+  font-size: .72rem;
+  color: $text-light;
+
+  svg {
+    width: 14px; height: 14px;
+    color: $success;
+    flex-shrink: 0;
+  }
+}
+
+// ── Animations ─────────────────────────────────────────────────────────────
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// ── Responsive ─────────────────────────────────────────────────────────────
+
+// Tablet (768–1024px): side by side, narrower hero
+@media (max-width: 1024px) {
+  .hero-panel { flex: 0 0 45%; }
+  .form-panel { max-width: none; flex: 1; }
+  .hero-title { font-size: 2rem; }
+}
+
+// Mobile & small tablet (<768px): stack vertically
+@media (max-width: 767px) {
+  .auth-wrapper {
+    flex-direction: column;
+  }
+
+  .hero-panel {
+    flex: none;
+    min-height: 220px;
+    height: 220px;
+    order: -1;
+  }
+
+  .hero-content {
+    text-align: center;
+    .brand-logo { justify-content: center; }
+    .hero-badges { justify-content: center; }
+  }
+
+  .hero-title { font-size: 1.75rem; margin-bottom: .6rem; }
+  .hero-subtitle { font-size: .875rem; margin-bottom: 1.25rem; }
+
+  .form-panel {
+    max-width: 100%;
+    padding: 1.75rem 1.25rem;
+    box-shadow: none;
+    border-radius: 24px 24px 0 0;
+    margin-top: -20px;
+    z-index: 1;
+    position: relative;
+  }
+
+  .mobile-brand { display: none; } // hero already shows brand on mobile
+
+  .form-header h2 { font-size: 1.4rem; }
+}
+
+// Very small devices (<400px)
+@media (max-width: 400px) {
+  .form-panel { padding: 1.5rem 1rem; }
+  .hero-badges .badge { font-size: .72rem; padding: .3rem .7rem; }
+}

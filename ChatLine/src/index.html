@@ -1,11 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>ChatLine</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <base href="/" />
+
+  <!-- Viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <!-- SEO -->
+  <meta name="description" content="ChatLine — Order fresh food from your college cafeteria. Skip the queue, browse the menu, and enjoy student deals." />
+  <meta name="theme-color" content="#2B7FE0" />
+
+  <!-- Favicon set — place these files in src/assets/ -->
+  <link rel="icon" type="image/png" sizes="32x32"   href="assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16"   href="assets/favicon-16.png" />
+  <link rel="icon" type="image/png"                 href="assets/favicon.png" />
+  <link rel="apple-touch-icon"                      href="assets/apple-touch-icon.png" />
+  <link rel="manifest"                              href="assets/site.webmanifest" />
+
+  <!-- Open Graph -->
+  <meta property="og:title"       content="ChatLine" />
+  <meta property="og:description" content="Order from your college cafeteria — fresh, fast, and just a tap away." />
+  <meta property="og:type"        content="website" />
+  <meta property="og:image"       content="assets/og-image.png" />
+
+  <!-- Security Headers (also enforce on server) -->
+  <meta http-equiv="X-Content-Type-Options"   content="nosniff" />
+  <meta http-equiv="X-Frame-Options"          content="DENY" />
+  <meta http-equiv="Referrer-Policy"          content="strict-origin-when-cross-origin" />
+
+  <!-- Fonts preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 </head>
 <body>
   <app-root></app-root>

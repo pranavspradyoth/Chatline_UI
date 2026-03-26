@@ -1,0 +1,150 @@
+<!-- header.component.html -->
+<header class="app-header">
+  <div class="header-inner">
+
+    <!-- ── Left: Brand ─────────────────────────────────────────── -->
+    <a routerLink="/dashboard" class="brand">
+      <div class="brand-icon">🍽️</div>
+      <span class="brand-name"><strong>ChatLine</strong></span>
+    </a>
+
+    <!-- ── Center: Nav links (desktop) ────────────────────────── -->
+    <nav class="desktop-nav">
+      <a routerLink="/dashboard"
+         class="nav-link"
+         [class.active]="isActive('/dashboard')">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+        </svg>
+        Dashboard
+      </a>
+      <a routerLink="/menu"
+         class="nav-link"
+         [class.active]="isActive('/menu')">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+        </svg>
+        Menu
+      </a>
+      <a routerLink="/orders"
+         class="nav-link"
+         [class.active]="isActive('/orders')">
+        <svg viewBox="0 0 20 20" fill="currentColor">
+          <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+          <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
+        </svg>
+        Order History
+      </a>
+    </nav>
+
+    <!-- ── Right: Actions (desktop) ───────────────────────────── -->
+    <div class="header-actions">
+
+      <!-- Account dropdown -->
+      <div class="profile-menu-wrapper">
+        <button class="profile-btn" (click)="toggleProfileMenu($event)" [class.open]="isProfileMenuOpen">
+          <div class="avatar">{{ getUserInitials() }}</div>
+          <div class="user-info">
+            <span class="user-email">{{ currentUser?.email }}</span>
+          </div>
+          <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"
+               [class.rotated]="isProfileMenuOpen">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </button>
+
+        <!-- Dropdown menu -->
+        <div class="profile-dropdown" [class.open]="isProfileMenuOpen">
+          <div class="dropdown-header">
+            <div class="dropdown-avatar">{{ getUserInitials() }}</div>
+            <div>
+              <div class="dropdown-name">{{ currentUser?.full_name || 'Student' }}</div>
+              <div class="dropdown-email">{{ currentUser?.email }}</div>
+            </div>
+          </div>
+
+          <div class="dropdown-divider"></div>
+
+          <a routerLink="/account" class="dropdown-item" (click)="isProfileMenuOpen = false">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+            </svg>
+            Account Details
+          </a>
+
+          <a routerLink="/orders" class="dropdown-item" (click)="isProfileMenuOpen = false">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+              <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
+            </svg>
+            Order History
+          </a>
+
+          <div class="dropdown-divider"></div>
+
+          <button class="dropdown-item logout-item" (click)="logout()">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+            </svg>
+            Sign out
+          </button>
+        </div>
+      </div>
+
+      <!-- Hamburger (mobile only) -->
+      <button class="hamburger" (click)="toggleMobileMenu($event)" [class.open]="isMobileMenuOpen">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Mobile Menu ─────────────────────────────────────────── -->
+  <div class="mobile-menu mobile-menu-wrapper" [class.open]="isMobileMenuOpen">
+    <div class="mobile-user">
+      <div class="avatar">{{ getUserInitials() }}</div>
+      <div>
+        <div class="mobile-user-name">{{ currentUser?.full_name || 'Student' }}</div>
+        <div class="mobile-user-email">{{ currentUser?.email }}</div>
+      </div>
+    </div>
+
+    <div class="mobile-divider"></div>
+
+    <a routerLink="/dashboard" class="mobile-nav-link" [class.active]="isActive('/dashboard')">
+      <svg viewBox="0 0 20 20" fill="currentColor">
+        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+      </svg>
+      Dashboard
+    </a>
+    <a routerLink="/menu" class="mobile-nav-link" [class.active]="isActive('/menu')">
+      <svg viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+      </svg>
+      Menu
+    </a>
+    <a routerLink="/orders" class="mobile-nav-link" [class.active]="isActive('/orders')">
+      <svg viewBox="0 0 20 20" fill="currentColor">
+        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+        <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
+      </svg>
+      Order History
+    </a>
+    <a routerLink="/account" class="mobile-nav-link" [class.active]="isActive('/account')">
+      <svg viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+      </svg>
+      Account Details
+    </a>
+
+    <div class="mobile-divider"></div>
+
+    <button class="mobile-nav-link logout-mobile" (click)="logout()">
+      <svg viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+      </svg>
+      Sign out
+    </button>
+  </div>
+</header>
