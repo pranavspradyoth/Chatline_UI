@@ -1,0 +1,305 @@
+/* order-card.component.scss */
+$primary:      #2B7FE0;
+$primary-dark: #1a5fb7;
+$text-dark:    #0F172A;
+$text-mid:     #475569;
+$text-light:   #94A3B8;
+$border:       #E2E8F0;
+$bg:           #F0F7FF;
+$white:        #FFFFFF;
+$success:      #22C55E;
+$font:         'DM Sans', 'Segoe UI', sans-serif;
+
+// ── Card shell ─────────────────────────────────────────────────
+.order-card {
+  background: $white;
+  border: 1.5px solid $border;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(0,0,0,.04);
+  font-family: $font;
+  transition: border-color .2s, box-shadow .2s;
+  animation: slideUp .25s ease both;
+
+  &:hover {
+    border-color: #BFDBFE;
+    box-shadow: 0 4px 18px rgba(43,127,224,.08);
+  }
+
+  &.is-expanded {
+    border-color: $primary;
+    box-shadow: 0 4px 20px rgba(43,127,224,.1);
+  }
+
+  &.is-cancelled {
+    opacity: .75;
+    border-color: #FECACA;
+    &:hover { border-color: #FCA5A5; }
+  }
+}
+
+// ── Header (always visible) ────────────────────────────────────
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background .15s;
+
+  &:hover { background: $bg; }
+}
+
+.header-left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+// ── Order ID + status ──────────────────────────────────────────
+.id-status-row {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  flex-wrap: wrap;
+}
+
+.order-id {
+  font-size: .95rem;
+  font-weight: 700;
+  color: $text-dark;
+  letter-spacing: .01em;
+  font-variant-numeric: tabular-nums;
+}
+
+// ── Status pills ───────────────────────────────────────────────
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .72rem;
+  font-weight: 600;
+  padding: .22rem .7rem;
+  border-radius: 999px;
+  letter-spacing: .02em;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-received {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+  .status-dot { background: #3B82F6; }
+}
+
+.status-served {
+  background: #F0FDF4;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
+  .status-dot { background: $success; }
+}
+
+.status-cancelled {
+  background: #FEF2F2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+  .status-dot { background: #EF4444; }
+}
+
+// ── Meta row (date + count) ────────────────────────────────────
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: .8rem;
+  color: $text-mid;
+
+  svg { width: 13px; height: 13px; color: $text-light; flex-shrink: 0; }
+}
+
+.meta-dot { color: $text-light; font-size: .8rem; }
+
+// ── Items preview ──────────────────────────────────────────────
+.items-preview {
+  font-size: .8rem;
+  color: $text-light;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  max-width: 380px;
+}
+
+// ── Header right ───────────────────────────────────────────────
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .45rem;
+  flex-shrink: 0;
+}
+
+.total-amount {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: $primary-dark;
+}
+
+.chevron {
+  width: 18px;
+  height: 18px;
+  color: $text-light;
+  transition: transform .25s ease;
+
+  &.flipped { transform: rotate(180deg); }
+}
+
+// ── Expanded body ──────────────────────────────────────────────
+.card-body {
+  animation: expandDown .2s ease;
+}
+
+.divider { height: 1px; background: $border; }
+
+.breakdown-header {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .8rem 1.25rem .4rem;
+  font-size: .75rem;
+  font-weight: 700;
+  color: $text-mid;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+
+  svg { width: 14px; height: 14px; color: $primary; }
+}
+
+// ── Item rows ──────────────────────────────────────────────────
+.item-list {
+  padding: 0 1.25rem .6rem;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .5rem .65rem;
+  border-radius: 8px;
+  background: $bg;
+  transition: background .15s;
+
+  &:hover { background: darken($bg, 2%); }
+}
+
+.item-left {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.veg-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: $success;
+  border: 1.5px solid darken($success, 10%);
+  flex-shrink: 0;
+}
+
+.item-name {
+  font-size: .875rem;
+  font-weight: 500;
+  color: $text-dark;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-right {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-shrink: 0;
+}
+
+.item-qty {
+  font-size: .8rem;
+  color: $text-light;
+  font-weight: 500;
+  min-width: 28px;
+  text-align: center;
+}
+
+.item-price {
+  font-size: .875rem;
+  font-weight: 600;
+  color: $text-dark;
+  min-width: 52px;
+  text-align: right;
+}
+
+// ── Total row ──────────────────────────────────────────────────
+.total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .7rem 1.25rem .9rem;
+  border-top: 1px dashed $border;
+  margin-top: .1rem;
+}
+
+.total-label {
+  font-size: .875rem;
+  font-weight: 600;
+  color: $text-mid;
+}
+
+.total-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $primary-dark;
+}
+
+// ── Animations ─────────────────────────────────────────────────
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes expandDown {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// ── Responsive ─────────────────────────────────────────────────
+@media (max-width: 600px) {
+  .card-header { padding: .9rem 1rem; gap: .75rem; }
+  .items-preview { max-width: 200px; }
+  .item-list { padding: 0 1rem .6rem; }
+  .total-row { padding: .7rem 1rem .85rem; }
+  .breakdown-header { padding: .8rem 1rem .4rem; }
+}

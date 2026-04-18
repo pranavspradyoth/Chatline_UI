@@ -1,0 +1,71 @@
+<!-- order-history.component.html -->
+<div class="order-history-page">
+
+  <!-- ── Page Header ──────────────────────────────────────────── -->
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1 class="page-title">Order History</h1>
+      <p class="page-subtitle">Track all your cafeteria orders</p>
+    </div>
+    <span class="total-badge" *ngIf="!isLoading && orders.length > 0">
+      {{ orders.length }} total
+    </span>
+  </div>
+
+  <!-- ── Filter Tabs ───────────────────────────────────────────── -->
+  <div class="filter-tabs" *ngIf="!isLoading && orders.length > 0">
+    <button
+      class="filter-tab"
+      *ngFor="let f of filters"
+      [class.active]="activeFilter === f"
+      (click)="setFilter(f)">
+      {{ f }}
+      <span class="filter-count">{{ getCount(f) }}</span>
+    </button>
+  </div>
+
+  <!-- ── Loading Skeleton ─────────────────────────────────────── -->
+  <div class="skeleton-list" *ngIf="isLoading">
+    <div class="skeleton-card" *ngFor="let i of [1,2,3,4]">
+      <div class="sk-top">
+        <div class="sk-block sk-id"></div>
+        <div class="sk-block sk-badge"></div>
+      </div>
+      <div class="sk-block sk-date"></div>
+      <div class="sk-block sk-preview"></div>
+    </div>
+  </div>
+
+  <!-- ── Error State ───────────────────────────────────────────── -->
+  <div class="state-box" *ngIf="!isLoading && errorMessage">
+    <div class="state-emoji">⚠️</div>
+    <h3>Couldn't load orders</h3>
+    <p>{{ errorMessage }}</p>
+    <button class="btn-retry" (click)="loadOrders()">Try again</button>
+  </div>
+
+  <!-- ── Empty State ───────────────────────────────────────────── -->
+  <div class="state-box" *ngIf="!isLoading && !errorMessage && orders.length === 0">
+    <div class="state-emoji">🍽️</div>
+    <h3>No orders yet</h3>
+    <p>Your order history will appear here once you place your first order.</p>
+    <a routerLink="/menu" class="btn-primary">Browse Menu</a>
+  </div>
+
+  <!-- ── Filtered Empty ─────────────────────────────────────────── -->
+  <div class="state-box state-box-sm"
+       *ngIf="!isLoading && !errorMessage && orders.length > 0 && filteredOrders.length === 0">
+    <div class="state-emoji">🔍</div>
+    <p>No <strong>{{ activeFilter }}</strong> orders found.</p>
+  </div>
+
+  <!-- ── Orders List ───────────────────────────────────────────── -->
+  <div class="orders-list"
+       *ngIf="!isLoading && !errorMessage && filteredOrders.length > 0">
+    <app-order-card
+      *ngFor="let order of filteredOrders; trackBy: trackByOrder"
+      [order]="order">
+    </app-order-card>
+  </div>
+
+</div>

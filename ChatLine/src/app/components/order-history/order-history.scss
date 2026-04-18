@@ -1,0 +1,200 @@
+/* order-history.component.scss */
+$primary:      #2B7FE0;
+$primary-dark: #1a5fb7;
+$primary-light:#EBF4FF;
+$text-dark:    #0F172A;
+$text-mid:     #475569;
+$text-light:   #94A3B8;
+$border:       #E2E8F0;
+$bg:           #F0F7FF;
+$white:        #FFFFFF;
+$font:         'DM Sans', 'Segoe UI', sans-serif;
+
+.order-history-page {
+  font-family: $font;
+  max-width: 780px;
+  margin: 0 auto;
+  animation: fadeIn .3s ease;
+}
+
+// ── Page Header ────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.page-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: $text-dark;
+  letter-spacing: -.03em;
+  margin: 0 0 .2rem;
+}
+
+.page-subtitle {
+  font-size: .875rem;
+  color: $text-mid;
+  margin: 0;
+}
+
+.total-badge {
+  font-size: .8rem;
+  font-weight: 600;
+  color: $primary;
+  background: $primary-light;
+  border: 1px solid #BFDBFE;
+  padding: .3rem .85rem;
+  border-radius: 999px;
+}
+
+// ── Filter Tabs ────────────────────────────────────────────────
+.filter-tabs {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .45rem .9rem;
+  border: 1.5px solid $border;
+  border-radius: 999px;
+  background: $white;
+  font-size: .825rem;
+  font-weight: 500;
+  color: $text-mid;
+  cursor: pointer;
+  font-family: $font;
+  transition: border-color .15s, color .15s, background .15s;
+
+  &:hover { border-color: $primary; color: $primary; }
+
+  &.active {
+    background: $primary;
+    border-color: $primary;
+    color: $white;
+
+    .filter-count { background: rgba(255,255,255,.25); color: $white; }
+  }
+}
+
+.filter-count {
+  font-size: .7rem;
+  font-weight: 700;
+  background: $bg;
+  color: $text-mid;
+  padding: .05rem .4rem;
+  border-radius: 999px;
+  min-width: 18px;
+  text-align: center;
+  transition: background .15s, color .15s;
+}
+
+// ── Skeleton ───────────────────────────────────────────────────
+.skeleton-list { display: flex; flex-direction: column; gap: .75rem; }
+
+.skeleton-card {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+}
+
+.sk-top { display: flex; align-items: center; gap: .75rem; }
+
+.sk-block {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #E2E8F0 25%, #F0F7FF 50%, #E2E8F0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.sk-id      { height: 18px; width: 180px; }
+.sk-badge   { height: 22px; width: 80px; border-radius: 999px; }
+.sk-date    { height: 13px; width: 210px; }
+.sk-preview { height: 13px; width: 260px; }
+
+// ── State boxes ────────────────────────────────────────────────
+.state-box {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: 16px;
+  padding: 4rem 2rem;
+  text-align: center;
+
+  .state-emoji { font-size: 2.75rem; margin-bottom: 1rem; }
+
+  h3 { font-size: 1.1rem; font-weight: 700; color: $text-dark; margin: 0 0 .4rem; }
+  p  { font-size: .9rem; color: $text-mid; margin: 0 0 1.5rem; }
+
+  &.state-box-sm {
+    padding: 2.5rem 2rem;
+    p { margin-bottom: 0; }
+    .state-emoji { font-size: 1.75rem; }
+  }
+}
+
+.btn-retry {
+  padding: .6rem 1.5rem;
+  background: $primary;
+  color: $white;
+  border: none;
+  border-radius: 8px;
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: $font;
+  transition: background .2s;
+  &:hover { background: $primary-dark; }
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: .65rem 1.5rem;
+  background: linear-gradient(135deg, $primary, $primary-dark);
+  color: $white;
+  border: none;
+  border-radius: 8px;
+  font-size: .875rem;
+  font-weight: 600;
+  text-decoration: none;
+  font-family: $font;
+  transition: transform .15s, box-shadow .2s;
+  box-shadow: 0 4px 12px rgba(43,127,224,.25);
+  &:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(43,127,224,.35); }
+}
+
+// ── Orders list ────────────────────────────────────────────────
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+// ── Animations ─────────────────────────────────────────────────
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (max-width: 600px) {
+  .page-title { font-size: 1.35rem; }
+  .filter-tabs { gap: .4rem; }
+  .filter-tab { padding: .4rem .75rem; font-size: .775rem; }
+}

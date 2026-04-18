@@ -1,0 +1,468 @@
+/* account.component.scss */
+$primary:      #2B7FE0;
+$primary-dark: #1a5fb7;
+$primary-light:#EBF4FF;
+$text-dark:    #0F172A;
+$text-mid:     #475569;
+$text-light:   #94A3B8;
+$border:       #E2E8F0;
+$bg:           #F0F7FF;
+$white:        #FFFFFF;
+$success:      #22C55E;
+$error:        #EF4444;
+$warning:      #F59E0B;
+$font:         'DM Sans', 'Segoe UI', sans-serif;
+
+// ── Page ───────────────────────────────────────────────────────
+.account-page {
+  font-family: $font;
+  max-width: 960px;
+  margin: 0 auto;
+  animation: fadeIn .3s ease;
+}
+
+// ── Page Header ────────────────────────────────────────────────
+.page-header {
+  margin-bottom: 1.75rem;
+  .page-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: $text-dark;
+    letter-spacing: -.03em;
+    margin: 0 0 .2rem;
+  }
+  .page-subtitle { font-size: .875rem; color: $text-mid; margin: 0; }
+}
+
+// ── Two-column layout ──────────────────────────────────────────
+.account-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.left-col, .right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+// ── Card base ──────────────────────────────────────────────────
+.card {
+  background: $white;
+  border: 1.5px solid $border;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 8px rgba(0,0,0,.04);
+}
+
+// ── Profile card ───────────────────────────────────────────────
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: .75rem;
+  padding: 2rem 1.5rem;
+}
+
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $primary, $primary-dark);
+  color: $white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: .02em;
+  box-shadow: 0 4px 16px rgba(43,127,224,.3);
+}
+
+.profile-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: $text-dark;
+  margin: 0;
+}
+
+.profile-email {
+  font-size: .825rem;
+  color: $text-mid;
+  margin: 0;
+  word-break: break-all;
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .72rem;
+  font-weight: 600;
+  color: $primary;
+  background: $primary-light;
+  border: 1px solid #BFDBFE;
+  padding: .25rem .65rem;
+  border-radius: 999px;
+  text-transform: capitalize;
+
+  svg { width: 12px; height: 12px; }
+}
+
+// ── Quick links card ───────────────────────────────────────────
+.quick-links-card {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.card-title {
+  font-size: .775rem;
+  font-weight: 700;
+  color: $text-light;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  margin-bottom: .5rem;
+}
+
+.quick-link {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .7rem .75rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background .15s;
+
+  &:hover { background: $bg; }
+  &:hover .quick-link-arrow { transform: translateX(3px); }
+}
+
+.quick-link-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg { width: 17px; height: 17px; }
+
+  &.menu-icon   { background: #EFF6FF; svg { color: $primary; } }
+  &.orders-icon { background: #F0FDF4; svg { color: $success; } }
+}
+
+.quick-link-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.quick-link-label {
+  font-size: .875rem;
+  font-weight: 600;
+  color: $text-dark;
+}
+
+.quick-link-sub {
+  font-size: .75rem;
+  color: $text-light;
+}
+
+.quick-link-arrow {
+  width: 16px;
+  height: 16px;
+  color: $text-light;
+  flex-shrink: 0;
+  transition: transform .2s;
+}
+
+// ── Password card ──────────────────────────────────────────────
+.password-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.card-header-row {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+}
+
+.card-header-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: $primary-light;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg { width: 20px; height: 20px; color: $primary; }
+
+  &.signout-icon {
+    background: #FEF2F2;
+    svg { color: $error; }
+  }
+}
+
+.card-subtitle { font-size: .8rem; color: $text-light; margin-top: .15rem; }
+
+// ── Alerts ─────────────────────────────────────────────────────
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: .6rem;
+  padding: .75rem 1rem;
+  border-radius: 10px;
+  font-size: .875rem;
+  animation: slideDown .2s ease;
+
+  svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  &.alert-success { background: #F0FDF4; border: 1px solid #BBF7D0; color: #15803D; }
+  &.alert-error   { background: #FEF2F2; border: 1px solid #FECACA; color: #B91C1C; }
+}
+
+// ── Form groups ────────────────────────────────────────────────
+.form-group { display: flex; flex-direction: column; gap: .45rem; }
+
+.form-label {
+  font-size: .825rem;
+  font-weight: 600;
+  color: $text-dark;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .input-icon {
+    position: absolute;
+    left: .9rem;
+    width: 17px; height: 17px;
+    color: $text-light;
+    pointer-events: none;
+    transition: color .2s;
+  }
+
+  &:focus-within .input-icon { color: $primary; }
+  &.error  .form-input { border-color: $error; background: #FEF2F2; }
+  &.success .form-input { border-color: $success; }
+}
+
+.form-input {
+  width: 100%;
+  padding: .72rem .9rem .72rem 2.75rem;
+  border: 1.5px solid $border;
+  border-radius: 10px;
+  font-size: .9rem;
+  color: $text-dark;
+  background: $white;
+  outline: none;
+  font-family: $font;
+  transition: border-color .2s, box-shadow .2s;
+  box-sizing: border-box;
+
+  &::placeholder { color: $text-light; }
+  &:focus { border-color: $primary; box-shadow: 0 0 0 3px rgba(43,127,224,.1); }
+}
+
+.toggle-btn {
+  position: absolute;
+  right: .75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $text-light;
+  display: flex;
+  align-items: center;
+  padding: .25rem;
+  border-radius: 6px;
+  transition: color .2s;
+
+  svg { width: 17px; height: 17px; }
+  &:hover { color: $primary; }
+}
+
+.field-error { font-size: .775rem; color: $error; font-weight: 500; }
+
+// ── Strength meter ─────────────────────────────────────────────
+.strength-meter {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-top: .1rem;
+}
+
+.strength-bars {
+  display: flex;
+  gap: 4px;
+
+  .bar {
+    height: 4px;
+    width: 36px;
+    border-radius: 999px;
+    background: $border;
+    transition: background .25s;
+
+    &.active {
+      &.lvl-1 { background: $error; }
+      &.lvl-2 { background: $warning; }
+      &.lvl-3 { background: #3B82F6; }
+      &.lvl-4 { background: $success; }
+    }
+  }
+}
+
+$warning: #F59E0B;
+
+.strength-label {
+  font-size: .73rem;
+  font-weight: 600;
+  &.lvl-1 { color: $error; }
+  &.lvl-2 { color: $warning; }
+  &.lvl-3 { color: #3B82F6; }
+  &.lvl-4 { color: $success; }
+}
+
+// ── Buttons ────────────────────────────────────────────────────
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  width: 100%;
+  padding: .8rem;
+  background: linear-gradient(135deg, $primary, $primary-dark);
+  color: $white;
+  border: none;
+  border-radius: 10px;
+  font-size: .925rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: $font;
+  transition: transform .15s, box-shadow .2s, opacity .2s;
+  box-shadow: 0 4px 14px rgba(43,127,224,.3);
+  margin-top: .5rem;
+
+  svg { width: 17px; height: 17px; }
+  &:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(43,127,224,.4); }
+  &:disabled { opacity: .65; cursor: not-allowed; }
+}
+
+.spinner { width: 18px; height: 18px; animation: spin .7s linear infinite; }
+
+// ── Signout card ───────────────────────────────────────────────
+.signout-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.signout-confirm {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 10px;
+  padding: 1rem;
+  animation: slideDown .2s ease;
+
+  .confirm-text {
+    font-size: .875rem;
+    color: #7F1D1D;
+    font-weight: 500;
+    margin: 0 0 .85rem;
+  }
+}
+
+.confirm-actions {
+  display: flex;
+  gap: .65rem;
+}
+
+.btn-outline {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  padding: .65rem;
+  background: $white;
+  color: $text-mid;
+  border: 1.5px solid $border;
+  border-radius: 8px;
+  font-size: .875rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: $font;
+  transition: border-color .2s, color .2s;
+
+  &:hover { border-color: $primary; color: $primary; }
+}
+
+.btn-danger {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  padding: .65rem;
+  background: $error;
+  color: $white;
+  border: none;
+  border-radius: 8px;
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: $font;
+  transition: background .2s;
+
+  svg { width: 16px; height: 16px; }
+  &:hover { background: darken($error, 8%); }
+}
+
+.btn-signout {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .75rem 1.25rem;
+  background: #FEF2F2;
+  color: #B91C1C;
+  border: 1.5px solid #FECACA;
+  border-radius: 10px;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: $font;
+  transition: background .15s, border-color .15s;
+  align-self: flex-start;
+
+  svg { width: 18px; height: 18px; }
+  &:hover { background: #FEE2E2; border-color: #FCA5A5; }
+}
+
+// ── Animations ─────────────────────────────────────────────────
+@keyframes fadeIn   { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideDown{ from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes spin     { to   { transform: rotate(360deg); } }
+
+// ── Responsive ─────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .account-layout { grid-template-columns: 1fr; }
+  .left-col { order: -1; }
+  .profile-card { flex-direction: row; text-align: left; padding: 1.25rem; }
+  .profile-avatar { width: 52px; height: 52px; font-size: 1.1rem; flex-shrink: 0; }
+}
+
+@media (max-width: 480px) {
+  .profile-card { flex-direction: column; text-align: center; }
+  .confirm-actions { flex-direction: column; }
+}

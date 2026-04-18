@@ -38,7 +38,7 @@ const routes: Routes = [
       {
         path: 'orders',
         loadComponent: () =>
-          import('./components/orders/orders').then(m => m.Orders)
+          import('./components/order-history/order-history').then(m => m.OrderHistoryComponent)
       },
       {
         path: 'menu',
@@ -48,7 +48,7 @@ const routes: Routes = [
       {
         path: 'account',
         loadComponent: () =>
-          import('./components/account/account').then(m => m.Account)
+          import('./components/account/account').then(m => m.AccountComponent)
       },
       {
         path: 'cart',

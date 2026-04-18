@@ -1,0 +1,82 @@
+<!-- order-card.component.html -->
+<div class="order-card" [class.is-expanded]="isExpanded" [class.is-cancelled]="order.status === 'Cancelled'">
+
+  <!-- ── Always-visible top section ──────────────────────────── -->
+  <div class="card-header" (click)="toggle()">
+
+    <div class="header-left">
+
+      <!-- Order ID + Status -->
+      <div class="id-status-row">
+        <span class="order-id">{{ order.orderId }}</span>
+        <span class="status-pill" [ngClass]="statusClass">
+          <span class="status-dot"></span>
+          {{ order.status }}
+        </span>
+      </div>
+
+      <!-- Date/time + item count -->
+      <div class="meta-row">
+        <span class="meta-item">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+          </svg>
+          {{ toIST(order.createdAt) }}
+        </span>
+        <span class="meta-dot">·</span>
+        <span class="meta-item">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3z"/>
+            <path d="M16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+          </svg>
+          {{ getTotalItems() }} {{ getTotalItems() === 1 ? 'item' : 'items' }}
+        </span>
+      </div>
+
+      <!-- Item names preview (collapsed only) -->
+      <p class="items-preview" *ngIf="!isExpanded">{{ itemsPreview }}</p>
+
+    </div>
+
+    <!-- Right: total + chevron -->
+    <div class="header-right">
+      <span class="total-amount">&#8377;{{ order.totalCost }}</span>
+      <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"
+           [class.flipped]="isExpanded">
+        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+      </svg>
+    </div>
+
+  </div>
+
+  <!-- ── Expanded item breakdown ───────────────────────────────── -->
+  <div class="card-body" *ngIf="isExpanded">
+    <div class="divider"></div>
+
+    <div class="breakdown-header">
+      <svg viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+      </svg>
+      Item Breakdown
+    </div>
+
+    <div class="item-list">
+      <div class="item-row" *ngFor="let item of order.items; trackBy: trackByItem">
+        <div class="item-left">
+          <span class="veg-dot"></span>
+          <span class="item-name">{{ item.name }}</span>
+        </div>
+        <div class="item-right">
+          <span class="item-qty">× {{ item.qty }}</span>
+          <span class="item-price">&#8377;{{ +item.price * +item.qty }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="total-row">
+      <span class="total-label">Total Paid</span>
+      <span class="total-value">&#8377;{{ order.totalCost }}</span>
+    </div>
+  </div>
+
+</div>
